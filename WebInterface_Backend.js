@@ -1,43 +1,45 @@
+
+
 const express = require('express');
 const mqtt = require('mqtt');
-const http = require('http');
-const socketIO = require('socket.io');
-const path = require('path');
-
-// Set up express with socket.io
 const app = express();
-const server = http.Server(app);
-const io = socketIO(server);
+const server = require("http").Server(app);
+const io = require("socket.io")(server);
 
-// Serve static files (like HTML, CSS, frontend JS)
-app.use(express.static(path.join(__dirname, 'public')));
+// TTN MQTT Integration Configuration
+const host = 'eu1.cloud.thethings.network' // Replace with your tenant address
+const port = 1883
+const username = 'caterpillar@ttn' // Replace with your APP_ID
+const password = 'NNSXS.TZ355CBNUXAC4G3FBLUGJU6ARGZ5UMUEZMAKX2Y.7T2BKZAIFK66F7XHFOV7SWMOZJ2R7W462HB5UJCTYPVWAMUFH7YQ' // Replace with your API Key
 
-// Add your TTN credentials here
-const appId = 'caterpillar'; 
-const accessKey = 'NNSXS.34STHQSUPUGIOHQVJ77RSLR57GCVCSU25QNPQJI.EDVNYJQZMMFDN6GVBZ5QWZNMSMWFHCQX2HPYL6DWGDUJUTLYXGOA'; 
+const clientId = `mqtt_${Math.random().toString(16).slice(3)}`
 
-// Connect to TTN and subscribe to your device
-const options = {
-  username: appId,
-  password: accessKey,
-  clientId: `mqtt_${Math.random().toString(16).slice(3)}`
-};
+const connectUrl = `mqtt://${host}:${port}`
 
-const client = mqtt.connect(`mqtts://${appId}.eu1.cloud.thethings.network`, options);
+const client = mqtt.connect(connectUrl, {
+  clientId,
+  clean: true,
+  connectTimeout: 4000,
+  username: username,
+  password: password,
+  reconnectPeriod: 1000,
+})
 
 client.on('connect', () => {
-  const deviceTopic = `v3/${appId}/devices/caterpillar-end-device/up`; 
-  client.subscribe(deviceTopic, (err) => {
-    if (!err) {
-      console.log(`Subscribed to ${deviceTopic}`);
-    }
-  });
-});
+  console.log('Connected to TTN')
+  client.subscribe([`v3/${username}/devices/+/up`], () => {
+    console.log(`Subscribe to topic 'v3/${username}/devices/+/up'`)
+  })
+})
 
-client.on('message', (topic, message) => {
-  io.emit('event-name', message.toString());
-});
+client.on('message', (topic, payload) => {
+  console.log('Received Message:', topic, payload.toString())
+  const message = JSON.parse(payload.toString());
+  io.emit('ttn-event', message);
+})
 
-server.listen(3000, () => {
-  console.log('Server listening on port 3000');
+// Start the server
+const port2 = process.env.PORT || 3000;
+server.listen(port2, () => {
+  console.log(`Server running on port ${port2}`);
 });
