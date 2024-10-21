@@ -1,23 +1,30 @@
-
-
 const express = require('express');
 const mqtt = require('mqtt');
+const path = require('path'); // Add this line
 const app = express();
 const server = require("http").Server(app);
 const io = require("socket.io")(server);
 
+// Serve static files from a 'public' directory
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Add a route for the root path
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
 // TTN MQTT Integration Configuration
-const host = 'eu1.cloud.thethings.network' // Replace with your tenant address
+const host = 'eu1.cloud.thethings.network'
 const port = 1883
-const username = 'caterpillar@ttn' // Replace with your APP_ID
-const password = 'NNSXS.TZ355CBNUXAC4G3FBLUGJU6ARGZ5UMUEZMAKX2Y.7T2BKZAIFK66F7XHFOV7SWMOZJ2R7W462HB5UJCTYPVWAMUFH7YQ' // Replace with your API Key
+const username = 'caterpillar@ttn' 
+const password = 'NNSXS.TZ355CBNUXAC4G3FBLUGJU6ARGZ5UMUEZMAKX2Y.7T2BKZAIFK66F7XHFOV7SWMOZJ2R7W462HB5UJCTYPVWAMUFH7YQ' 
 
 const clientId = `mqtt_${Math.random().toString(16).slice(3)}`
 
 const connectUrl = `mqtt://${host}:${port}`
 
 const client = mqtt.connect(connectUrl, {
-  clientId,
+  clientId, 
   clean: true,
   connectTimeout: 4000,
   username: username,
