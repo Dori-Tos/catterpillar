@@ -17,14 +17,26 @@ public:
 
     bool isAvailable();
 
-    void readAcceleration(float &x, float &y, float &z);
+    void readAcceleration();
 
-    void readTemperature(float &temp);
+    float getX();
+
+    float getY();
+
+    float getZ();
+
+    void readTemperature();
+
+    float getTemp();
 
     void loopAccelerometer();
 
 private:
     LIS3DHTR<TwoWire> LIS;
+    float _x;
+    float _y;
+    float _z;
+    float _temp;
 };
 
 #endif // ACCELEROMETER_H

@@ -3,6 +3,7 @@
 Accelerometer::Accelerometer()
 {
     LIS = LIS3DHTR<TwoWire>();
+    _x, _y, _z, _temp = float();
 }
 
 void Accelerometer::init()
@@ -24,19 +25,39 @@ bool Accelerometer::isAvailable()
     return LIS.available();
 }
 
-void Accelerometer::readAcceleration(float &x, float &y, float &z)
+void Accelerometer::readAcceleration()
 {
     // Static in x direction : 1g (x), 0g (y), 0g (z)
     // Static in y direction : 0g (x), 1g (y), 0g (z)
     // Static in z direction : 0g (x), 0g (y), 1g (z)
-    x = LIS.getAccelerationX();
-    y = LIS.getAccelerationY();
-    z = LIS.getAccelerationZ();
+    _x = LIS.getAccelerationX();
+    _y = LIS.getAccelerationY();
+    _z = LIS.getAccelerationZ();
 }
 
-void Accelerometer::readTemperature(float &temp)
+float Accelerometer::getX()
 {
-    temp = LIS.getTemperature();
+    return _x;
+}
+
+float Accelerometer::getY()
+{
+    return _y;
+}
+
+float Accelerometer::getZ()
+{
+    return _z;
+}
+
+void Accelerometer::readTemperature()
+{
+    _temp = LIS.getTemperature();
+}
+
+float Accelerometer::getTemp()
+{
+    return _temp;
 }
 
 void Accelerometer::loopAccelerometer()
@@ -48,18 +69,9 @@ void Accelerometer::loopAccelerometer()
             ;
         return;
     }
-    float x, y, z, temp;
-    readAcceleration(x, y, z);
-    readTemperature(temp);
-    Serial.print("x:");
-    Serial.print(x);
-    Serial.print("  ");
-    Serial.print("y:");
-    Serial.print(y);
-    Serial.print("  ");
-    Serial.print("z:");
-    Serial.println(z);
-    Serial.print("temp:");
-    Serial.println(temp);
+    readAcceleration();
+    readTemperature();
+    Serial.printf("x: %.2f  y: %.2f  z: %.2f\n", _x, _y, _z);
+    Serial.printf("temp: %.2f\n", _temp);
     delay(500);
 }
