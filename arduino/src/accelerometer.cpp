@@ -2,6 +2,7 @@
 
 Accelerometer::Accelerometer()
 {
+    lastRead = millis();
     LIS = LIS3DHTR<TwoWire>();
     _x = 0.0;
     _y = 0.0;
@@ -63,18 +64,21 @@ float Accelerometer::getTemp()
     return _temp;
 }
 
-void Accelerometer::loopAccelerometer()
+void Accelerometer::update()
 {
-    if (!checkConnection())
+    if (millis() - lastRead >= readInterval)
     {
-        Serial.println("LIS3DHTR didn't connect.");
-        while (1)
-            ;
-        return;
+        if (isAvailable())
+        {
+            readAcceleration();
+            readTemperature();
+            // Serial.printf("x: %.2f  y: %.2f  z: %.2f\n", _x, _y, _z);
+            // Serial.printf("temp: %.2f\n", _temp);
+            lastRead = millis();
+        }
+        else
+        {
+            Serial.println("LIS3DHTR not available");
+        }
     }
-    readAcceleration();
-    readTemperature();
-    Serial.printf("x: %.2f  y: %.2f  z: %.2f\n", _x, _y, _z);
-    Serial.printf("temp: %.2f\n", _temp);
-    delay(500);
 }

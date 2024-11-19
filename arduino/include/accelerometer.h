@@ -29,7 +29,7 @@ public:
 
     float getTemp();
 
-    void loopAccelerometer();
+    void update();
 
 private:
     LIS3DHTR<TwoWire> LIS;
@@ -37,6 +37,9 @@ private:
     float _y;
     float _z;
     float _temp;
+    unsigned long lastRead;
+    // Read interval in milliseconds
+    static const unsigned readInterval = 5000;
 };
 
 #endif // ACCELEROMETER_H
