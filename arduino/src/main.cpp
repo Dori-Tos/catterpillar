@@ -4,6 +4,7 @@
 #include <Wire.h>
 #include <math.h>
 #include <arduino.h>
+#include "accelerometer.h"
 
 // Used for software SPI
 #define LIS3DH_CLK 13
@@ -80,12 +81,16 @@ void buildPayload()
     payload[7] = 7;
 }
 
+Accelerometer accelerometer;
+
 void setup()
 {
     delay(1000);
     while (!Serial)
         ;
     Serial.begin(115200);
+
+    accelerometer.init();
 
     // LMIC init.
     os_init();
