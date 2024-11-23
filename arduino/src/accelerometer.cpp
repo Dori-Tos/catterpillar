@@ -1,7 +1,8 @@
 #include "accelerometer.h"
 
-Accelerometer::Accelerometer()
+Accelerometer::Accelerometer(bool temp_en = false)
 {
+    TEMP_EN = temp_en;
     lastRead = millis();
     LIS = LIS3DHTR<TwoWire>();
     x = 0.0;
@@ -13,7 +14,8 @@ Accelerometer::Accelerometer()
 void Accelerometer::init()
 {
     LIS.begin(WIRE, 0x19); // IIC init
-    LIS.openTemp();        // If ADC3 is used, the temperature detection needs to be turned off.
+    if (TEMP_EN)
+        LIS.openTemp(); // If ADC3 is used, the temperature detection needs to be turned off.
     delay(100);
     LIS.setFullScaleRange(LIS3DHTR_RANGE_2G);
     LIS.setOutputDataRate(LIS3DHTR_DATARATE_50HZ);
@@ -81,7 +83,10 @@ void Accelerometer::read()
         if (isAvailable())
         {
             readAcceleration();
-            readTemperature();
+            if (TEMP_EN)
+            {
+                readTemperature();
+            }
             // Serial.printf("x: %.2f  y: %.2f  z: %.2f\n", _x, _y, _z);
             // Serial.printf("temp: %.2f\n", _temp);
             lastRead = millis();

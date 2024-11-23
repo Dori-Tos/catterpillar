@@ -10,7 +10,7 @@
 class Accelerometer
 {
 public:
-    Accelerometer();
+    Accelerometer(bool temp_en);
 
     void init();
 
@@ -26,6 +26,18 @@ public:
 
     double getZ();
 
+    /**
+     * @brief Compute the roll angle of the accelerometer.
+     *
+     * Roll angle is the rotation around the X-axis, from the acceleration data.
+     *
+     * @return `double` : The roll angle in degrees.
+     *
+     * Roll angle is at 0° when horizontal and at +/- 180° when upside down.
+     *
+     * Increase when rotating clockwise and decrease counter-clockwise.
+     *
+     */
     double getRoll();
 
     double getPitch();
@@ -37,6 +49,7 @@ public:
     void read();
 
 private:
+    bool TEMP_EN;
     LIS3DHTR<TwoWire> LIS;
     double x;
     double y;
@@ -44,7 +57,7 @@ private:
     double temp;
     unsigned long lastRead;
     // Read interval in milliseconds
-    static const unsigned readInterval = 5000;
+    static const unsigned readInterval = 10000;
 };
 
 #endif // ACCELEROMETER_H

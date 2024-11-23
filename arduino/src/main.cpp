@@ -6,7 +6,7 @@
 unsigned long acc_timer = millis();
 const int taskDelay = 100;
 
-Accelerometer accelerometer;
+Accelerometer accelerometer(false);
 
 void buildPayload()
 {
