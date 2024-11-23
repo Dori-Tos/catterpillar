@@ -19,24 +19,24 @@ public:
 
     void readAcceleration();
 
-    float getX();
+    double getX();
 
-    float getY();
+    double getY();
 
-    float getZ();
+    double getZ();
 
     void readTemperature();
 
-    float getTemp();
+    double getTemp();
 
     void update();
 
 private:
     LIS3DHTR<TwoWire> LIS;
-    float _x;
-    float _y;
-    float _z;
-    float _temp;
+    double _x;
+    double _y;
+    double _z;
+    double _temp;
     unsigned long lastRead;
     // Read interval in milliseconds
     static const unsigned readInterval = 5000;

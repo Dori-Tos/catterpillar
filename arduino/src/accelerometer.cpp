@@ -39,17 +39,17 @@ void Accelerometer::readAcceleration()
     _z = LIS.getAccelerationZ();
 }
 
-float Accelerometer::getX()
+double Accelerometer::getX()
 {
     return _x;
 }
 
-float Accelerometer::getY()
+double Accelerometer::getY()
 {
     return _y;
 }
 
-float Accelerometer::getZ()
+double Accelerometer::getZ()
 {
     return _z;
 }
@@ -59,7 +59,7 @@ void Accelerometer::readTemperature()
     _temp = LIS.getTemperature();
 }
 
-float Accelerometer::getTemp()
+double Accelerometer::getTemp()
 {
     return _temp;
 }
