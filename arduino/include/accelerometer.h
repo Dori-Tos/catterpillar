@@ -29,7 +29,7 @@ public:
     /**
      * @brief Compute the roll angle of the accelerometer.
      *
-     * Roll angle is the rotation around the X-axis, from the acceleration data.
+     * Roll angle is the rotation around the X-axis.
      *
      * @return `double` : The roll angle in degrees.
      *
@@ -40,6 +40,18 @@ public:
      */
     double getRoll();
 
+    /**
+     * @brief Compute the pitch angle of the accelerometer.
+     *
+     * Pitch angle is the rotation around the Y-axis.
+     *
+     * @return `double` : The pitch angle in degrees.
+     *
+     * Pitch angle is at 0° when horizontal and at +/- 180° when upside down.
+     *
+     * Increase when rotating clockwise and decrease counter-clockwise.
+     *
+     */
     double getPitch();
 
     void readTemperature();

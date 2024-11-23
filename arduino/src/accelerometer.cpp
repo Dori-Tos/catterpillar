@@ -63,7 +63,20 @@ double Accelerometer::getRoll()
 
 double Accelerometer::getPitch()
 {
-    return atan2(-x, sqrt(y * y + z * z)) * 180 / M_PI;
+    double pitch = atan2(-x, sqrt(y * y + z * z)) * 180 / M_PI;
+    // If the z value is negative, the pitch angle should be inverted due to trigonometric signs.
+    if (z < 0)
+    {
+        if (x < 0)
+        {
+            pitch = 180 - pitch;
+        }
+        else
+        {
+            pitch = -180 - pitch;
+        }
+    }
+    return pitch;
 }
 
 void Accelerometer::readTemperature()
