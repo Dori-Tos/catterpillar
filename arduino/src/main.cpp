@@ -34,7 +34,7 @@ void loop()
     // will want to call `os_runloop_once()` every so often, to keep the radio running.
     os_runloop_once();
 
-    accelerometer.update();
+    accelerometer.read();
 
     if (millis() - acc_timer > taskDelay)
     {

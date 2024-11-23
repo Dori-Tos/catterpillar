@@ -3,6 +3,7 @@
 
 #include <Wire.h>
 #include <LIS3DHTR.h>
+#include <math.h>
 
 #define WIRE Wire
 
@@ -25,18 +26,22 @@ public:
 
     double getZ();
 
+    double getRoll();
+
+    double getPitch();
+
     void readTemperature();
 
     double getTemp();
 
-    void update();
+    void read();
 
 private:
     LIS3DHTR<TwoWire> LIS;
-    double _x;
-    double _y;
-    double _z;
-    double _temp;
+    double x;
+    double y;
+    double z;
+    double temp;
     unsigned long lastRead;
     // Read interval in milliseconds
     static const unsigned readInterval = 5000;

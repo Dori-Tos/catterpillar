@@ -4,10 +4,10 @@ Accelerometer::Accelerometer()
 {
     lastRead = millis();
     LIS = LIS3DHTR<TwoWire>();
-    _x = 0.0;
-    _y = 0.0;
-    _z = 0.0;
-    _temp = 0.0;
+    x = 0.0;
+    y = 0.0;
+    z = 0.0;
+    temp = 0.0;
 }
 
 void Accelerometer::init()
@@ -34,37 +34,47 @@ void Accelerometer::readAcceleration()
     // Static in x direction : 1g (x), 0g (y), 0g (z)
     // Static in y direction : 0g (x), 1g (y), 0g (z)
     // Static in z direction : 0g (x), 0g (y), 1g (z)
-    _x = LIS.getAccelerationX();
-    _y = LIS.getAccelerationY();
-    _z = LIS.getAccelerationZ();
+    x = LIS.getAccelerationX();
+    y = LIS.getAccelerationY();
+    z = LIS.getAccelerationZ();
 }
 
 double Accelerometer::getX()
 {
-    return _x;
+    return x;
 }
 
 double Accelerometer::getY()
 {
-    return _y;
+    return y;
 }
 
 double Accelerometer::getZ()
 {
-    return _z;
+    return z;
+}
+
+double Accelerometer::getRoll()
+{
+    return atan2(y, z) * 180 / M_PI;
+}
+
+double Accelerometer::getPitch()
+{
+    return atan2(-x, sqrt(y * y + z * z)) * 180 / M_PI;
 }
 
 void Accelerometer::readTemperature()
 {
-    _temp = LIS.getTemperature();
+    temp = LIS.getTemperature();
 }
 
 double Accelerometer::getTemp()
 {
-    return _temp;
+    return temp;
 }
 
-void Accelerometer::update()
+void Accelerometer::read()
 {
     if (millis() - lastRead >= readInterval)
     {
