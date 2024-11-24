@@ -1,6 +1,6 @@
 #include "accelerometer.h"
 
-Accelerometer::Accelerometer(bool temp_en = false)
+Accelerometer::Accelerometer(bool temp_en)
 {
     TEMP_EN = temp_en;
     lastRead = millis();
@@ -33,9 +33,6 @@ bool Accelerometer::isAvailable()
 
 void Accelerometer::readAcceleration()
 {
-    // Static in x direction : 1g (x), 0g (y), 0g (z)
-    // Static in y direction : 0g (x), 1g (y), 0g (z)
-    // Static in z direction : 0g (x), 0g (y), 1g (z)
     x = LIS.getAccelerationX();
     y = LIS.getAccelerationY();
     z = LIS.getAccelerationZ();
