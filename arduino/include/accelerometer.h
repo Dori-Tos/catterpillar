@@ -163,7 +163,7 @@ private:
     /// @brief Last time the accelerometer was read in milliseconds.
     unsigned long lastRead;
     /// @brief Time interval between accelerometer reads in milliseconds.
-    static const unsigned readInterval = 10000;
+    static const unsigned readInterval = 30000;
 };
 
 #endif // ACCELEROMETER_H
