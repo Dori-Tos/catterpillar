@@ -19,6 +19,12 @@ void Accelerometer::init()
     delay(100);
     LIS.setFullScaleRange(LIS3DHTR_RANGE_2G);
     LIS.setOutputDataRate(LIS3DHTR_DATARATE_50HZ);
+
+    readAcceleration();
+    if (TEMP_EN)
+    {
+        readTemperature();
+    }
 }
 
 bool Accelerometer::checkConnection()
@@ -33,9 +39,22 @@ bool Accelerometer::isAvailable()
 
 void Accelerometer::readAcceleration()
 {
-    x = LIS.getAccelerationX();
-    y = LIS.getAccelerationY();
-    z = LIS.getAccelerationZ();
+    double sumX = 0.0;
+    double sumY = 0.0;
+    double sumZ = 0.0;
+    const int numReadings = 10;
+
+    for (int i = 0; i < numReadings; i++)
+    {
+        sumX += LIS.getAccelerationX();
+        sumY += LIS.getAccelerationY();
+        sumZ += LIS.getAccelerationZ();
+        delay(10); // Small delay between readings
+    }
+
+    x = sumX / (double)numReadings;
+    y = sumY / (double)numReadings;
+    z = sumZ / (double)numReadings;
 }
 
 double Accelerometer::getX()
