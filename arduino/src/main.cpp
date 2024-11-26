@@ -1,16 +1,24 @@
 #include <arduino.h>
-#include "accelerometer.h"
 #include "ttn_handler.h"
 #include "payload_builder.h"
+#include "gps.h"
+#include "accelerometer.h"
+#include "rfid.h"
 
 unsigned long acc_timer = millis();
 const int taskDelay = 100;
 
+uint16_t vehicleID = 6439;
+GPS gps;
 Accelerometer accelerometer(false);
+RFID rfid;
 
 void buildPayload()
 {
-    PayloadBuilder::buildAccelerationPayload(TTNHandler::payload, accelerometer);
+    PayloadBuilder::buildVehiclePayload(TTNHandler::payload, vehicleID);
+    PayloadBuilder::buildGPSPayload(TTNHandler::payload, gps);
+    PayloadBuilder::buildAccelerometerPayload(TTNHandler::payload, accelerometer);
+    PayloadBuilder::buildRFIDPayload(TTNHandler::payload, rfid);
 }
 
 void setup()
