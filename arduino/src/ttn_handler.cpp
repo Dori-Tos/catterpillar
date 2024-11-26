@@ -13,7 +13,7 @@
 // cycle limitations).
 const unsigned TTNHandler::TX_INTERVAL = 7;
 // payload to send to TTN gateway
-uint8_t TTNHandler::payload[17];
+uint8_t TTNHandler::payload[16];
 osjob_t TTNHandler::sendjob;
 
 // TTN Configuration

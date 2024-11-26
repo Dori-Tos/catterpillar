@@ -15,7 +15,7 @@ public:
 
     static void onEvent(ev_t ev);
 
-    static uint8_t payload[17];
+    static uint8_t payload[16];
 
 private:
     static const unsigned TX_INTERVAL;
