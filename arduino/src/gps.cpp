@@ -2,11 +2,10 @@
 
 GPS::GPS() {}
 
-// TODO: Use serial communication to get GPS data
-
 void GPS::init()
 {
-    // Serial.begin(9600);
+    // Serial1 -> RX: pin 0 (S0.3), TX: pin 1 (S0.2)
+    Serial1.begin(9600);
 }
 
 bool GPS::isAvailable()
@@ -26,6 +25,8 @@ double GPS::getLongitude()
 
 void GPS::update()
 {
+    // TODO: Use serial communication to get GPS data
+
     // while (Serial.available() > 0) {
     //     gps.encode(Serial.read());
     // }

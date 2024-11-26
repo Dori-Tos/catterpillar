@@ -1,6 +1,8 @@
 #ifndef RFID_H
 #define RFID_H
 
+#include <Arduino.h>        // required before wiring_private.h
+#include "wiring_private.h" // pinPeripheral() function
 #include <MFRC522.h>
 
 class RFID
