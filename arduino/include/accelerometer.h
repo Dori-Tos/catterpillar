@@ -27,8 +27,8 @@ public:
      * @brief Initializes the accelerometer.
      *
      * This function sets up the necessary configurations and prepares the
-     * accelerometer for data acquisition. It should be called before any
-     * other accelerometer functions are used.
+     * accelerometer for data acquisition. It should be called in the main setup()
+     * function before any other accelerometer functions are used.
      */
     void init();
 
