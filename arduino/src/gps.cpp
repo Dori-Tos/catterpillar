@@ -8,26 +8,30 @@ void GPS::init()
     Serial1.begin(9600);
 }
 
-bool GPS::isAvailable()
-{
-    return gps.location.isValid();
-}
-
 double GPS::getLatitude()
 {
-    return gps.location.lat();
+    if (gps.location.isValid())
+    {
+        return gps.location.lat();
+    }
+    return 0.0;
 }
 
 double GPS::getLongitude()
 {
-    return gps.location.lng();
+    if (gps.location.isValid())
+    {
+        return gps.location.lng();
+    }
+    return 0.0;
 }
 
 void GPS::update()
 {
-    // TODO: Use serial communication to get GPS data
-
-    // while (Serial.available() > 0) {
-    //     gps.encode(Serial.read());
-    // }
+    // If any characters have arrived from the GPS,
+    // send them to the TinyGPS object
+    while (Serial1.available() > 0)
+    {
+        gps.encode(Serial1.read());
+    }
 }

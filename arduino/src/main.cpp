@@ -28,6 +28,7 @@ void setup()
         ;
     Serial.begin(115200);
 
+    gps.init();
     accelerometer.init();
 
     TTNHandler::init();
@@ -42,6 +43,8 @@ void loop()
     // will want to call `os_runloop_once()` every so often, to keep the radio running.
     os_runloop_once();
 
+    // TODO: Verify sensors readings position in code
+    gps.update();
     accelerometer.read();
 
     if (millis() - acc_timer > taskDelay)
