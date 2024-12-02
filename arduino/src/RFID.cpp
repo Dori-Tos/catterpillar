@@ -19,7 +19,7 @@ RFID::RFID()
 
 void RFID::init()
 {
-    Serial2.begin(115200);
+    Serial2.begin(9600);
 
     // Assign pins 10 & 12 SERCOM functionality
     pinPeripheral(10, PIO_SERCOM);

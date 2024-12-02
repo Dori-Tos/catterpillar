@@ -3,7 +3,7 @@
 
 #include <Arduino.h>        // required before wiring_private.h
 #include "wiring_private.h" // pinPeripheral() function
-#include <MFRC522.h>
+
 
 class RFID
 {
@@ -14,7 +14,7 @@ public:
 
     bool isCardPresent();
 
-    uint32_t getCardID();
+    String getCardID();
 
     void listen();
     
