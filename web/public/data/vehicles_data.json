@@ -12,7 +12,7 @@
         "driver_name": "Justin Jefferson",
         "needsAssistance": false,
         "location": [34.0522, -118.2437]
-    },
+    }, 
     "vehicle_3": {
         "id": "V003",
         "type": "Grue",
