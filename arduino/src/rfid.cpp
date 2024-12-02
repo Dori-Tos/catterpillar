@@ -14,7 +14,7 @@ void SERCOM1_Handler()
 RFID::RFID()
 {
     cardPresent = false;
-    cardID = 0;
+    cardID = "";
 }
 
 void RFID::init()
@@ -31,12 +31,18 @@ bool RFID::isCardPresent()
     return cardPresent;
 }
 
-uint32_t RFID::getCardID()
+String RFID::getCardID()
 {
+    
     return cardID;
 }
 
 void RFID::listen()
 {
-    // TODO: Listen the serial port connected to Arduino for RFID card ID
+    if (Serial2.available() > 0)
+    {
+        cardID = Serial2.readStringUntil('\n'); 
+        cardPresent = true;
+    }    
 }
+

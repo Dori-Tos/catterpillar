@@ -17,10 +17,11 @@ public:
     uint32_t getCardID();
 
     void listen();
-
+    
+    
 private:
     bool cardPresent;
-    uint32_t cardID;
+    String cardID;
 };
 
 #endif // RFID_H
