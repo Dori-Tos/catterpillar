@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const socket = io();
 
     const vehicleList = document.getElementById("vehicle-list");
-    const map = L.map("map").setView([21.39, 84.29], 13); //Where the map is centered. To change according to the location
+    const map = L.map("map").setView([21.39, 84.29], 13);
 
     // Add OpenStreetMap tile layer
     L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -17,7 +17,8 @@ document.addEventListener("DOMContentLoaded", () => {
         vehicleList.innerHTML = "";
         data.vehicles.forEach((vehicle) => {
             const listItem = document.createElement("li");
-            listItem.className = "p-2 border-b border-gray-300 cursor-pointer";
+            listItem.className = "p-2 border-b border-gray-300 cursor-pointer vehicle-item";
+            listItem.dataset.vehicleId = vehicle.id; // Add data attribute for vehicle ID
             listItem.innerHTML = `
                 <div class="flex justify-between items-center">
                     <span>${vehicle.type} - ${vehicle.id}</span>
@@ -27,14 +28,38 @@ document.addEventListener("DOMContentLoaded", () => {
             `;
             vehicleList.appendChild(listItem);
         });
+
+        // Add click event to highlight specific vehicle on the map
+        document.querySelectorAll('.vehicle-item').forEach(item => {
+            item.addEventListener('click', () => {
+                // Remove precendent highlights
+                document.querySelectorAll('.vehicle-item').forEach(el => {
+                    el.classList.remove('bg-blue-100');
+                });
+
+                // Highlight clicked list item
+                item.classList.add('bg-blue-100');
+
+                // Get the vehicle ID
+                const vehicleId = item.dataset.vehicleId;
+
+                // Find and highlight the corresponding marker
+                if (vehicleMarkers[vehicleId]) {
+                    // Open popup and zoom to marker
+                    const marker = vehicleMarkers[vehicleId];
+                    marker.openPopup();
+                    map.setView(marker.getLatLng(), 15);
+                }
+            });
+        });
     }
 
-    // Function to update the map with new data
+    // Update the map with new data
     function updateMap(data) {
         data.vehicles.forEach((vehicle) => {
             if (vehicleMarkers[vehicle.id]) {
                 // Update the existing marker
-                vehicleMarkers[vehicle.id].setLatLng(location);
+                vehicleMarkers[vehicle.id].setLatLng(vehicle.location);
             } else {
                 // Create a new marker
                 const marker = L.marker(vehicle.location)
