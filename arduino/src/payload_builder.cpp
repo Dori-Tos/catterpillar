@@ -8,7 +8,6 @@ void PayloadBuilder::buildVehiclePayload(uint8_t *payload, uint16_t vehicleID)
 
 void PayloadBuilder::buildGPSPayload(uint8_t *payload, GPS gps)
 {
-    // TODO: Verify shifts
     // .000001 resolution -> *100000
     int32_t latitude = (int32_t)(gps.getLatitude() * 100000);
     int32_t longitude = (int32_t)(gps.getLongitude() * 100000);
@@ -34,5 +33,9 @@ void PayloadBuilder::buildAccelerometerPayload(uint8_t *payload, Accelerometer a
 
 void PayloadBuilder::buildRFIDPayload(uint8_t *payload, RFID rfid)
 {
-    // TODO: Modify the payload when card is detected
+    u_int32_t cardID = rfid.getCardID();
+    payload[13] = (cardID >> 24) & 0xFF;
+    payload[14] = (cardID >> 16) & 0xFF;
+    payload[15] = (cardID >> 8) & 0xFF;
+    payload[16] = cardID & 0xFF;
 }
