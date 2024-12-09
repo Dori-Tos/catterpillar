@@ -45,6 +45,7 @@ fs.readFile(path.join(__dirname, "public", "data", "vehicles_id_data.json"), "ut
         return;
     }
     vehiclesTypesData = JSON.parse(data);
+    console.log(vehiclesTypesData)
 });
 
 // Read and parse employees_data.json
@@ -91,26 +92,29 @@ client.on("message", (topic, message) => {
     const parsedMessage = JSON.parse(message.toString());
 
     const parsedVehicleData = {
-        vehicleID: parsedMessage.vehicleID,
-        lat: parsedMessage.latitude,
-        lng: parsedMessage.longitude,
-        rollAngle: parsedMessage.rollAngle,
-        pitchAngle: parsedMessage.pitchAngle,
-        rfidData: parsedMessage.rfidData
+        vehicleID: parsedMessage.uplink_message.decoded_payload.vehicleID,
+        lat: parsedMessage.uplink_message.decoded_payload.latitude,
+        lng: parsedMessage.uplink_message.decoded_payload.longitude,
+        rollAngle: parsedMessage.uplink_message.decoded_payload.rollAngle,
+        pitchAngle: parsedMessage.uplink_message.decoded_payload.pitchAngle,
+        rfidData: parsedMessage.uplink_message.decoded_payload.rfidData
     };
 
-    let vehicleType = getVehicleTypeById(vehicleID, vehiclesTypesData)
+    let vehicleType = getVehicleTypeById(parsedVehicleData.vehicleID, vehiclesTypesData)
 
-    let employee_name = getEmployeeNameById(rfidData, employeesData)
+    let employee_name = getEmployeeNameById(parsedVehicleData.rfidData, employeesData)
 
     const maxRollAngle = 30;
     const maxPitchAngle = 40;
 
     let needsAssistance = false
-    if (rollAngle >= maxRollAngle || rollAngle <= -1 * maxRollAngle || pitchAngle >= maxPitchAngle || pitchAngle <= -1* maxPitchAngle)
+    if (parsedVehicleData.rollAngle >= maxRollAngle ||
+         parsedVehicleData.rollAngle <= -1 * maxRollAngle ||
+         parsedVehicleData.pitchAngle >= maxPitchAngle || 
+         parsedVehicleData.pitchAngle <= -1* maxPitchAngle)
         needsAssistance = true;
 
-    let location = [lat, lng]
+    let location = [parsedVehicleData.lat, parsedVehicleData.lng]
 
     const vehicleData = {
         "id": parsedVehicleData.vehicleID,
@@ -119,6 +123,8 @@ client.on("message", (topic, message) => {
         "needsAssistance": needsAssistance,
         "location": location
     };
+
+    console.log(vehicleData);
 
     io.emit("ttn-event", { vehicles: [vehicleData] });
 });

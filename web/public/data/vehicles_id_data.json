@@ -4,30 +4,30 @@
         {
             "Sedan": [
                 {
-                    "vehicle_id": "A0 00 00 00"
+                    "vehicle_id": 40960
                 },
                 {
-                    "vehicle_id": "A0 00 00 01"
+                    "vehicle_id": "A0 01"
                 }
             ]
         },
         {
             "SUV": [
                 {
-                    "vehicle_id": "A5 00 00 00"
+                    "vehicle_id": "A5 00"
                 },
                 {
-                    "vehicle_id": "A5 00 00 01"
+                    "vehicle_id": "A5 01"
                 }
             ]
         },
         {
             "Grue": [
                 {
-                    "vehicle_id": "A6 00 00 00"
+                    "vehicle_id": "A6 00"
                 },
                 {
-                    "vehicle_id": "A6 00 00 01"
+                    "vehicle_id": "A6 01"
                 }
             ]
         }
