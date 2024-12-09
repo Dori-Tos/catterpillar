@@ -91,7 +91,7 @@ client.on("message", (topic, message) => {
     const parsedMessage = JSON.parse(message.toString());
 
     const parsedVehicleData = {
-        id: parsedMessage.vehicleID,
+        vehicleID: parsedMessage.vehicleID,
         lat: parsedMessage.latitude,
         lng: parsedMessage.longitude,
         rollAngle: parsedMessage.rollAngle,
