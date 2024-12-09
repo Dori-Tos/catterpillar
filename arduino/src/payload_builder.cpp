@@ -33,7 +33,7 @@ void PayloadBuilder::buildAccelerometerPayload(uint8_t *payload, Accelerometer a
 
 void PayloadBuilder::buildRFIDPayload(uint8_t *payload, RFID rfid)
 {
-    u_int32_t cardID = rfid.getCardID();
+    uint32_t cardID = rfid.getCardID();
     payload[13] = (cardID >> 24) & 0xFF;
     payload[14] = (cardID >> 16) & 0xFF;
     payload[15] = (cardID >> 8) & 0xFF;
