@@ -150,6 +150,7 @@ void setup()
 
     gps.init();
     accelerometer.init();
+    rfid.init();
 
     // LMIC init.
     os_init();
@@ -180,6 +181,7 @@ void loop()
 
     gps.update();
     accelerometer.read();
+    rfid.listen();
 
     // Wait for taskDelay milliseconds, then always build the payload
     if (millis() - acc_timer > taskDelay)
