@@ -8,6 +8,7 @@
  * @brief A class to interface with Grove GPS module.
  *
  * @note Ensure that the GPS module is placed in an open area with a clear view of the sky to avoid any signal interference.
+ * It needs to find the satellite which can take up to 5 minutes before it starts sending the correct data.
  */
 class GPS
 {
