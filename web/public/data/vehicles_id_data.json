@@ -7,27 +7,27 @@
                     "vehicle_id": 40960
                 },
                 {
-                    "vehicle_id": "A0 01"
+                    "vehicle_id": 40961
                 }
             ]
         },
         {
             "SUV": [
                 {
-                    "vehicle_id": "A5 00"
+                    "vehicle_id": 42240
                 },
                 {
-                    "vehicle_id": "A5 01"
+                    "vehicle_id": 42241
                 }
             ]
         },
         {
             "Grue": [
                 {
-                    "vehicle_id": "A6 00"
+                    "vehicle_id": 42496
                 },
                 {
-                    "vehicle_id": "A6 01"
+                    "vehicle_id": 42497
                 }
             ]
         }
