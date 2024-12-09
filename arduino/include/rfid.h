@@ -4,7 +4,6 @@
 #include <Arduino.h>        // required before wiring_private.h
 #include "wiring_private.h" // pinPeripheral() function
 
-
 class RFID
 {
 public:
@@ -12,16 +11,22 @@ public:
 
     void init();
 
-    bool isCardPresent();
-
-    String getCardID();
+    int getCardID(int i);
 
     void listen();
-    
-    
+
+    int fromHexToInt(const String& hexString);
+
+    void splitString(const String& str, char delimiter, String results[], size_t& count);
+
+    String trimString(const String& str);
+
+    void ConvertCardId();
+
 private:
     bool cardPresent;
-    String cardID;
+    String msg;
+    int cardID[20]; // Initialize cardID array with size 20
 };
 
 #endif // RFID_H
