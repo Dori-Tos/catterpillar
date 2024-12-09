@@ -19,12 +19,6 @@ void Accelerometer::init()
     delay(100);
     LIS.setFullScaleRange(LIS3DHTR_RANGE_2G);
     LIS.setOutputDataRate(LIS3DHTR_DATARATE_50HZ);
-
-    readAcceleration();
-    if (TEMP_EN)
-    {
-        readTemperature();
-    }
 }
 
 bool Accelerometer::checkConnection()
@@ -46,9 +40,9 @@ void Accelerometer::readAcceleration()
 
     for (int i = 0; i < numReadings; i++)
     {
-        sumX += LIS.getAccelerationX();
-        sumY += LIS.getAccelerationY();
-        sumZ += LIS.getAccelerationZ();
+        sumX += (double)LIS.getAccelerationX();
+        sumY += (double)LIS.getAccelerationY();
+        sumZ += (double)LIS.getAccelerationZ();
         delay(10); // Small delay between readings
     }
 
@@ -74,12 +68,12 @@ double Accelerometer::getZ()
 
 double Accelerometer::getRoll()
 {
-    return atan2(y, z) * 180 / M_PI;
+    return atan2(y, z) * 180.0 / M_PI;
 }
 
 double Accelerometer::getPitch()
 {
-    double pitch = atan2(-x, sqrt(y * y + z * z)) * 180 / M_PI;
+    double pitch = atan2(-x, sqrt(y * y + z * z)) * 180.0 / M_PI;
     // If the z value is negative, the pitch angle should be inverted due to trigonometric signs.
     if (z < 0)
     {
@@ -116,8 +110,6 @@ void Accelerometer::read()
             {
                 readTemperature();
             }
-            // Serial.printf("x: %.2f  y: %.2f  z: %.2f\n", _x, _y, _z);
-            // Serial.printf("temp: %.2f\n", _temp);
             lastRead = millis();
         }
         else
