@@ -139,8 +139,10 @@ client.on("message", (topic, message) => {
         if (parsedVehicleData.rollAngle >= maxRollAngle ||
             parsedVehicleData.rollAngle <= -1 * maxRollAngle ||
             parsedVehicleData.pitchAngle >= maxPitchAngle || 
-            parsedVehicleData.pitchAngle <= -1 * maxPitchAngle)
-            needsAssistance = true;
+            parsedVehicleData.pitchAngle <= -1 * maxPitchAngle){
+
+                needsAssistance = true;
+            }
 
         let location = [parsedVehicleData.lat, parsedVehicleData.lng];
 
