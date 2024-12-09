@@ -39,6 +39,16 @@
                 41.96896,
                 45
             ]
+        },
+        {
+            "id": 6439,
+            "type": null,
+            "driver_name": null,
+            "needsAssistance": true,
+            "location": [
+                0,
+                0
+            ]
         }
     ]
 }
