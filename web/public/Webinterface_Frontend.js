@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     </div>
                     <div class="text-sm text-gray-600">Last used by: ${vehicle.driver_name}</div>
                 </div>
-                <button class="remove-vehicle ml-2 text-red-500" data-vehicle-id="${vehicle.id}">✖</button>
+                <button class="remove-vehicle ml-2 text-red-500" data-vehicle-id="${vehicle.id}">✖️</button>
             `;
             vehicleList.appendChild(listItem);
         });
@@ -59,16 +59,13 @@ document.addEventListener("DOMContentLoaded", () => {
         // Add event listeners for checkboxes
         document.querySelectorAll('.vehicle-checkbox').forEach(checkbox => {
             checkbox.addEventListener('change', (e) => {
-                // Stop propagation to prevent triggering list item click
                 e.stopPropagation();
 
                 const vehicleId = e.target.dataset.vehicleId;
                 const isVisible = e.target.checked;
                 
-                // Store visibility preference
                 localStorage.setItem(`vehicle_${vehicleId}_visible`, isVisible);
                 
-                // Toggle marker visibility
                 const marker = vehicleMarkers[vehicleId];
                 if (marker) {
                     if (isVisible) {
@@ -79,7 +76,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             });
 
-            // Prevent checkbox from triggering list item click
             checkbox.addEventListener('click', (e) => {
                 e.stopPropagation();
             });
@@ -88,18 +84,15 @@ document.addEventListener("DOMContentLoaded", () => {
         // Add event listeners for remove buttons
         document.querySelectorAll('.remove-vehicle').forEach(button => {
             button.addEventListener('click', (e) => {
-                // Stop propagation to prevent triggering list item click
                 e.stopPropagation();
 
                 const vehicleId = e.target.dataset.vehicleId;
                 
-                // Remove marker from map
                 if (vehicleMarkers[vehicleId]) {
                     map.removeLayer(vehicleMarkers[vehicleId]);
                     delete vehicleMarkers[vehicleId];
                 }
                 
-                // Remove from list
                 e.target.closest('li').remove();
             });
         });
@@ -107,25 +100,19 @@ document.addEventListener("DOMContentLoaded", () => {
         // Add click event to highlight specific vehicle on the map
         document.querySelectorAll('.vehicle-item').forEach(item => {
             item.addEventListener('click', (e) => {
-                // Check if click was on checkbox or remove button
                 if (e.target.closest('.vehicle-checkbox, .remove-vehicle')) {
                     return;
                 }
 
-                // Remove previous highlights
                 document.querySelectorAll('.vehicle-item').forEach(el => {
                     el.classList.remove('bg-blue-100');
                 });
 
-                // Highlight clicked list item
                 item.classList.add('bg-blue-100');
 
-                // Get the vehicle ID
                 const vehicleId = item.dataset.vehicleId;
 
-                // Find and highlight the corresponding marker
                 if (vehicleMarkers[vehicleId]) {
-                    // Open popup and zoom to marker
                     const marker = vehicleMarkers[vehicleId];
                     marker.openPopup();
                     map.setView(marker.getLatLng(), 15);
@@ -146,27 +133,22 @@ document.addEventListener("DOMContentLoaded", () => {
     // Update the map with new data
     function updateMap(data) {
         data.vehicles.forEach((vehicle) => {
-            // Check if vehicle should be visible based on previous setting
             const isVisible = localStorage.getItem(`vehicle_${vehicle.id}_visible`) !== 'false';
 
             if (vehicleMarkers[vehicle.id]) {
-                // Update the existing marker
                 vehicleMarkers[vehicle.id].setLatLng(vehicle.location);
                 
-                // Respect visibility setting
                 if (isVisible) {
                     vehicleMarkers[vehicle.id].addTo(map);
                 } else {
                     map.removeLayer(vehicleMarkers[vehicle.id]);
                 }
             } else {
-                // Create a new marker
                 const marker = L.marker(vehicle.location)
                     .bindPopup(
                         `<b>${vehicle.type}</b><br>ID: ${vehicle.id}<br>Driver: ${vehicle.driver_name}`
                     );
                 
-                // Respect visibility setting
                 if (isVisible) {
                     marker.addTo(map);
                 }
@@ -176,20 +158,23 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Fetch initial data from the JSON file
-    fetch("/data/vehicles_data.json")
-    .then((response) => response.json())
-    .then((data) => {
-        updateVehicleList(data);
-        updateMap(data);
-    })
-    .catch((error) => console.error("Error loading vehicle data:", error));
-;
+    // Fetch and update data function
+    function fetchAndUpdateVehicleData() {
+        fetch("/data/vehicles_data.json")
+        .then((response) => response.json())
+        .then((data) => {
+            updateVehicleList(data);
+            updateMap(data);
+        })
+        .catch((error) => console.error("Error loading vehicle data:", error));
+    }
+
+    // Fetch initial data
+    fetchAndUpdateVehicleData();
 
     // Listen for real-time updates from Socket.IO
-    socket.on("ttn-event", (data) => {
-        console.log("Real-time data:", data);
-        updateVehicleList(data);
-        updateMap(data);
+    socket.on("ttn-event", () => {
+        // When a new event is received, re-fetch the entire JSON
+        fetchAndUpdateVehicleData();
     });
 });

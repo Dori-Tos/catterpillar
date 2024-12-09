@@ -1,25 +1,44 @@
-{ 
+{
     "vehicles": [
-   {
-        "id": "V001",
-        "type": "Sedan",
-        "driver_name": "Harrison Smith",
-        "needsAssistance": false,
-        "location": [40.7128, -74.0060]
-    },
-    {
-        "id": "V002",
-        "type": "SUV",
-        "driver_name": "Justin Jefferson",
-        "needsAssistance": false,
-        "location": [34.0522, -118.2437]
-    }, 
-    {
-        "id": "V003",
-        "type": "Grue",
-        "driver_name": "Sam Darnold",
-        "needsAssistance": true,
-        "location": [51.5074, -0.1278] 
-    }
-]
+        {
+            "id": 40961,
+            "type": "Sedan",
+            "driver_name": "Harrison Smith",
+            "needsAssistance": false,
+            "location": [
+                40.7128,
+                -74.006
+            ]
+        },
+        {
+            "id": 42240,
+            "type": "SUV",
+            "driver_name": "Justin Jefferson",
+            "needsAssistance": false,
+            "location": [
+                34.0522,
+                -118.2437
+            ]
+        },
+        {
+            "id": 42496,
+            "type": "Grue",
+            "driver_name": "Sam Darnold",
+            "needsAssistance": true,
+            "location": [
+                51.5074,
+                -0.1278
+            ]
+        },
+        {
+            "id": 40960,
+            "type": "Sedan",
+            "driver_name": "Justin Jefferson",
+            "needsAssistance": false,
+            "location": [
+                48.31776,
+                45
+            ]
+        }
+    ]
 }
