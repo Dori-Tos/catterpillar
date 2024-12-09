@@ -3,6 +3,7 @@
 #include <SPI.h>
 #include <Wire.h>
 #include <math.h>
+#include <rfid.h>
 
 // Used for software SPI
 #define LIS3DH_CLK 13
@@ -49,11 +50,14 @@ const lmic_pinmap lmic_pins = {
     .spi_freq = 8000000,
 };
 
+RFID rfid; // Global RFID object
+
 void setup() {
     delay(1000);
     while (! Serial);
     Serial.begin(115200);
-
+    //RFID init
+    rfid.init();
     // LMIC init.
     os_init();
     // Reset the MAC state. Session and pending data transfers will be discarded.
@@ -79,6 +83,10 @@ void loop() {
     // but beware that LoRaWAN timing is pretty tight, so if you do more than a few milliseconds of work, you
     // will want to call `os_runloop_once()` every so often, to keep the radio running.
     os_runloop_once();
+
+
+    
+    rfid.listen();
 
     if (millis() - acc_timer > taskDelay) {
         buildPayload();
