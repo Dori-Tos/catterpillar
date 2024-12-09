@@ -4,6 +4,7 @@ const server = require("http").Server(app);
 const io = require("socket.io")(server);
 const mqtt = require("mqtt");
 const path = require("path");
+const fs = require("fs");
 require("dotenv").config();
 
 // Set EJS as the template engine
