@@ -4,6 +4,7 @@ const server = require("http").Server(app);
 const io = require("socket.io")(server);
 const mqtt = require("mqtt");
 const path = require("path");
+const fs = require("fs");
 require("dotenv").config();
 
 // Set EJS as the template engine
@@ -33,21 +34,97 @@ client.on("connect", () => {
     });
 });
 
+
+let vehiclesTypesData;
+let employeesData;
+
+// Read and parse vehicles_id_data.json
+fs.readFile(path.join(__dirname, "public", "data", "vehicles_id_data.json"), "utf8", (err, data) => {
+    if (err) {
+        console.error("Error reading vehicles_id_data.json:", err);
+        return;
+    }
+    vehiclesTypesData = JSON.parse(data);
+    console.log(vehiclesTypesData)
+});
+
+// Read and parse employees_data.json
+fs.readFile(path.join(__dirname, "public", "data", "employees_data.json"), "utf8", (err, data) => {
+    if (err) {
+        console.error("Error reading employees_data.json:", err);
+        return;
+    }
+    employeesData = JSON.parse(data);
+});
+
+function getVehicleTypeById(vehicleId, vehiclesTypesFile) {
+    const vehicleTypes = vehiclesTypesFile.vehicle_types;
+
+    for (const vehicleType of vehicleTypes) {
+        for (const [type, vehicles] of Object.entries(vehicleType)) {
+            for (const vehicle of vehicles) {
+                if (vehicle.vehicle_id === vehicleId) {
+                    return type;
+                }
+            }
+        }
+    }
+
+    return null; 
+}
+
+function getEmployeeNameById(employeeId, employeesFile) {
+    const employees = employeesFile.employees;
+
+    for (const employee of employees) {
+        if (employee.employee_id === employeeId) {
+            return employee.employee_name;
+        }
+    }
+
+    return null;
+}
+
 client.on("error", (error) => console.error("TTN MQTT error:", error));
 
 client.on("message", (topic, message) => {
     console.log("Received TTN message:", topic, message.toString());
     const parsedMessage = JSON.parse(message.toString());
 
-    const vehicleData = {
-        id: parsedMessage.device_id,
-        type: parsedMessage.type || "Unknown",
-        lat: parsedMessage.location.latitude,
-        lng: parsedMessage.location.longitude,
-        lastUser: parsedMessage.lastUser || "Unknown",
-        needsAssistance: parsedMessage.needsAssistance || false,
-        history: parsedMessage.history || [],
+    const parsedVehicleData = {
+        vehicleID: parsedMessage.uplink_message.decoded_payload.vehicleID,
+        lat: parsedMessage.uplink_message.decoded_payload.latitude,
+        lng: parsedMessage.uplink_message.decoded_payload.longitude,
+        rollAngle: parsedMessage.uplink_message.decoded_payload.rollAngle,
+        pitchAngle: parsedMessage.uplink_message.decoded_payload.pitchAngle,
+        rfidData: parsedMessage.uplink_message.decoded_payload.rfidData
     };
+
+    let vehicleType = getVehicleTypeById(parsedVehicleData.vehicleID, vehiclesTypesData)
+
+    let employee_name = getEmployeeNameById(parsedVehicleData.rfidData, employeesData)
+
+    const maxRollAngle = 30;
+    const maxPitchAngle = 40;
+
+    let needsAssistance = false
+    if (parsedVehicleData.rollAngle >= maxRollAngle ||
+         parsedVehicleData.rollAngle <= -1 * maxRollAngle ||
+         parsedVehicleData.pitchAngle >= maxPitchAngle || 
+         parsedVehicleData.pitchAngle <= -1* maxPitchAngle)
+        needsAssistance = true;
+
+    let location = [parsedVehicleData.lat, parsedVehicleData.lng]
+
+    const vehicleData = {
+        "id": parsedVehicleData.vehicleID,
+        "type": vehicleType,
+        "driver_name": employee_name,
+        "needsAssistance": needsAssistance,
+        "location": location
+    };
+
+    console.log(vehicleData);
 
     io.emit("ttn-event", { vehicles: [vehicleData] });
 });

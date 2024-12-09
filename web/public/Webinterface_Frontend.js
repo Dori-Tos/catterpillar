@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const vehicleList = document.getElementById("vehicle-list");
     const searchInput = document.getElementById("vehicle-search");
     const assistanceFilter = document.getElementById("assistance-filter");
-    const map = L.map("map").setView([21.39, 84.29], 13);
+    const map = L.map("map").setView([21.39, 84.29], 13); //Center of map. Need to change according to our location
 
     // Add OpenStreetMap tile layer
     L.tileLayer("https://tile.openstreetMap.org/{z}/{x}/{y}.png", {
@@ -178,13 +178,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Fetch initial data from the JSON file
     fetch("/data/vehicles_data.json")
-        .then((response) => response.json())
-        .then((vehicles) => {
-            const formattedData = { vehicles: Object.values(vehicles) };
-            updateVehicleList(formattedData);
-            updateMap(formattedData);
-        })
-        .catch((error) => console.error("Error loading vehicle data:", error));
+    .then((response) => response.json())
+    .then((data) => {
+        updateVehicleList(data);
+        updateMap(data);
+    })
+    .catch((error) => console.error("Error loading vehicle data:", error));
+;
 
     // Listen for real-time updates from Socket.IO
     socket.on("ttn-event", (data) => {

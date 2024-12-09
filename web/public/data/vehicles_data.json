@@ -1,23 +1,25 @@
-{
-    "vehicle_1": {
+{ 
+    "vehicles": [
+   {
         "id": "V001",
         "type": "Sedan",
         "driver_name": "Harrison Smith",
         "needsAssistance": false,
         "location": [40.7128, -74.0060]
     },
-    "vehicle_2": {
+    {
         "id": "V002",
         "type": "SUV",
         "driver_name": "Justin Jefferson",
         "needsAssistance": false,
         "location": [34.0522, -118.2437]
     }, 
-    "vehicle_3": {
+    {
         "id": "V003",
         "type": "Grue",
         "driver_name": "Sam Darnold",
         "needsAssistance": true,
         "location": [51.5074, -0.1278] 
     }
+]
 }
