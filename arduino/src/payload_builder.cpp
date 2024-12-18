@@ -10,7 +10,9 @@ void PayloadBuilder::buildGPSPayload(uint8_t *payload, GPS gps)
 {
     // .000001 resolution -> *100000
     int32_t latitude = (int32_t)(gps.getLatitude() * 100000);
+    int32_t latitude = (int32_t)(50.84986 * 100000); //! Temporary test value
     int32_t longitude = (int32_t)(gps.getLongitude() * 100000);
+    int32_t longitude = (int32_t)(4.45389 * 100000); //! Temporary test value
     payload[2] = (latitude >> 20) & 0xFF;
     payload[3] = (latitude >> 12) & 0xFF;
     payload[4] = (latitude >> 4) & 0xFF;
