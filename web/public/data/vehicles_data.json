@@ -6,7 +6,8 @@
             "driver_name": "Harrison Smith",
             "needsAssistance": false,
             "location": [
-                50.4778, 4.4517
+                50.4778,
+                4.4517
             ]
         },
         {
@@ -15,7 +16,8 @@
             "driver_name": "Justin Jefferson",
             "needsAssistance": false,
             "location": [
-                50.4763, 4.4493
+                50.4763,
+                4.4493
             ]
         },
         {
@@ -24,7 +26,8 @@
             "driver_name": "Sam Darnold",
             "needsAssistance": true,
             "location": [
-                50.4795, 4.4544
+                50.4795,
+                4.4544
             ]
         },
         {
@@ -33,9 +36,19 @@
             "driver_name": "Justin Jefferson",
             "needsAssistance": false,
             "location": [
-                50.4757, 4.4474
+                50.4757,
+                4.4474
+            ]
+        },
+        {
+            "id": 6439,
+            "type": "SUV",
+            "driver_name": 2097676288,
+            "needsAssistance": false,
+            "location": [
+                50.84986,
+                4.45389
             ]
         }
-
     ]
 }

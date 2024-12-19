@@ -72,12 +72,13 @@ function getEmployeeNameById(employeeId, employeesFile) {
 
     for (const employee of employees) {
         if (employee.employee_id === employeeId) {
-            return employee.employee_name;
+            return employee.employee_name; // Return name if ID is found
         }
     }
 
-    return null;
+    return employeeId; // Return the ID itself if not found
 }
+
 
 // Function to read vehicles from JSON file
 function readVehiclesFile() {
