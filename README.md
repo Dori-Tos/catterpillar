@@ -39,7 +39,7 @@ cd caterpillar
 
 ### Prerequisites
 
-Install `PlatformIO` extension in `Visual Studio Code` or the `Arduino IDE`.
+Install `PlatformIO` extension in `Visual Studio Code` or install the `Arduino IDE`.
 
 Ensure you also have `Node.js` installed on your machine.
 
@@ -59,9 +59,12 @@ npm install
 
 3. Create a `.env` file in the `web` folder and add your TTN application credentials:
 
-```sh
+```properties
 TTN_PASSWORD=your_ttn_password
 ```
+
+> Note that you might need to change some TTN parameters depending on the region you're in.
+> This project was made in Europe, so with `eu1.cloud.thethings.network` as host.
 
 4. Start the backend server:
 
@@ -77,9 +80,25 @@ node app.js
 
 1. Open the PlatformIO project catterpillar/arduino (where the `platformio.ini` file is located) with PlatformIO extension in Visual Studio Code.
 2. Let PlatformIO install the necessary libraries in `.pio` folder.
-3. Connect the Adafruit Feather M0 to your computer using a USB cable.
-4. Build and upload the code to the Adafruit Feather M0.
-5. Open the Serial Monitor to view the output.
+3. Change `APPEUI`, `DEVEUI` and `APPKEY` values in `main.cpp` according to your TTN application.
+4. Connect the Adafruit Feather M0 to your computer using a USB cable.
+5. Build and upload the code to the Adafruit Feather M0.
+6. Open the Serial Monitor to view the output.
+
+> **Navigate to `arduino\.pio\libdeps\adafruit_feather_m0\MCCI LoRaWAN LMIC library\project_config\lmic_project_config.h` and uncomment the frequency band of your region!**
+>
+> ```cpp
+> // project-specific definitions
+> #define CFG_eu868 1
+> // #define CFG_us915 1
+> // #define CFG_au915 1
+> // #define CFG_as923 1
+> // #define LMIC_COUNTRY_CODE LMIC_COUNTRY_CODE_JP      /* for as923-JP; also define CFG_as923 */
+> // #define CFG_kr920 1
+> // #define CFG_in866 1
+> #define CFG_sx1276_radio 1
+> // #define LMIC_USE_INTERRUPTS
+> ```
 
 #### Arduino IDE
 
@@ -106,16 +125,33 @@ mv arduino/main/main.cpp arduino/main/main.ino
 
 4. Open the `main.ino` file with the Arduino IDE.
 
-5. Make sure you have `Adafruit SAMD Boards` and the following Arduino libraries installed:
+5. Change `APPEUI`, `DEVEUI` and `APPKEY` values in `main.ino` according to your TTN application.
+
+6. Make sure you have `Adafruit SAMD Boards` and the following Arduino libraries installed:
 
     - `mcci-catena/MCCI LoRaWAN LMIC library@^4.1.1`
     - `seeed-studio/Grove-3-Axis-Digital-Accelerometer-2g-to-16g-LIS3DHTR@^1.2.4`
     - `mikalhart/TinyGPSPlus@^1.1.0`
     - `miguelbalboa/MFRC522@^1.4.11`
 
-6. Connect the Adafruit Feather M0 to your computer using a USB cable.
+7. Connect the Adafruit Feather M0 to your computer using a USB cable.
 
-7. Build and upload the code to the Adafruit Feather M0.
+8. Build and upload the code to the Adafruit Feather M0.
+
+> **Locate the library installation path on your computer, for example `Arduino/libraries/MCCI_LoRaWAN_LMIC_library/project_config/lmic_project_config.h` and uncomment the frequency band of your region!**
+>
+> ```cpp
+> // project-specific definitions
+> #define CFG_eu868 1
+> // #define CFG_us915 1
+> // #define CFG_au915 1
+> // #define CFG_as923 1
+> // #define LMIC_COUNTRY_CODE LMIC_COUNTRY_CODE_JP      /* for as923-JP; also define CFG_as923 */
+> // #define CFG_kr920 1
+> // #define CFG_in866 1
+> #define CFG_sx1276_radio 1
+> // #define LMIC_USE_INTERRUPTS
+> ```
 
 ## License
 
