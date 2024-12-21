@@ -22,7 +22,7 @@ const int taskDelay = 100;
 // cycle limitations).
 const unsigned TX_INTERVAL = 7;
 // payload to send to TTN gateway
-uint8_t payload[16];
+uint8_t payload[17];
 osjob_t sendjob;
 
 // TTN Configuration
